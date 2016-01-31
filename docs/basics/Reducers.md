@@ -245,32 +245,32 @@ function visibilityFilter(state = SHOW_ALL, action) {
 现在我们可以开发一个函数来做为主 reducer，它调用多个子 reducer 分别处理 state 中的一部分数据，然后再把这些数据合成一个大的单一对象。主 reducer 并不需要设置初始化时完整的 state。初始时，如果给子 reducer 传入 `undefined` 只要返回它们的默认值即可。
 
 ```js
-function todos(state = [], action) {
+function todos(todoList = [], action) {
   switch (action.type) {
     case ADD_TODO:
-      return [...state, {
+      return [...todoList, {
         text: action.text,
         completed: false
       }];
     case COMPLETE_TODO:
       return [
-        ...state.slice(0, action.index),
-        Object.assign({}, state[action.index], {
+        ...todoList.slice(0, action.index),
+        Object.assign({}, todoList[action.index], {
           completed: true
         }),
-        ...state.slice(action.index + 1)
+        ...todoList.slice(action.index + 1)
       ];
     default:
-      return state;
+      return todoList;
   }
 }
 
-function visibilityFilter(state = SHOW_ALL, action) {
+function visibilityFilter(filter = SHOW_ALL, action) {
   switch (action.type) {
     case SET_VISIBILITY_FILTER:
       return action.filter;
     default:
-      return state;
+      return filter;
   }
 }
 
